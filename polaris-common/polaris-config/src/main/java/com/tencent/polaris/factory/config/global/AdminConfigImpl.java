@@ -66,4 +66,12 @@ public class AdminConfigImpl implements AdminConfig {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "AdminConfigImpl{" +
+                "host='" + host + '\'' +
+                ", port=" + port +
+                '}';
+    }
 }

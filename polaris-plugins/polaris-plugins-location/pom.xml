@@ -1,55 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<parent>
-		<artifactId>polaris-plugins</artifactId>
-		<groupId>com.tencent.polaris</groupId>
-		<version>${revision}</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>polaris-plugins</artifactId>
+        <groupId>com.tencent.polaris</groupId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>polaris-plugins-location</artifactId>
-	<packaging>pom</packaging>
+    <artifactId>polaris-plugins-location</artifactId>
+    <packaging>pom</packaging>
 
-	<name>Polaris Plugins Location Provider</name>
-	<description>Polaris Plugins Location Provider POM</description>
+    <name>Polaris Plugins Location Provider</name>
+    <description>Polaris Plugins Location Provider POM</description>
 
-	<modules>
-		<module>location-provider-base</module>
-		<module>location-provider-local</module>
-		<module>location-provider-remotehttp</module>
-		<module>location-provider-remoteservice</module>
-	</modules>
+    <modules>
+        <module>location-provider-base</module>
+        <module>location-provider-local</module>
+        <module>location-provider-remotehttp</module>
+        <module>location-provider-remoteservice</module>
+    </modules>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.tencent.polaris</groupId>
-			<artifactId>polaris-model</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.tencent.polaris</groupId>
-			<artifactId>polaris-plugin-api</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.tencent.polaris</groupId>
-			<artifactId>polaris-config</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.9.0</version>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>com.tencent.polaris</groupId>
+            <artifactId>polaris-model</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tencent.polaris</groupId>
+            <artifactId>polaris-plugin-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.tencent.polaris</groupId>
+            <artifactId>polaris-config</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.9.0</version>
+        </dependency>
+    </dependencies>
 
 </project>

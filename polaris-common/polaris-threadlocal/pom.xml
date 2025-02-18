@@ -1,30 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<parent>
-		<artifactId>polaris-common</artifactId>
-		<groupId>com.tencent.polaris</groupId>
-		<version>${revision}</version>
-		<relativePath>../pom.xml</relativePath>
-	</parent>
-	<modelVersion>4.0.0</modelVersion>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>polaris-common</artifactId>
+        <groupId>com.tencent.polaris</groupId>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>polaris-threadlocal</artifactId>
-	<name>Polaris Common ThreadLocal</name>
-	<description>Polaris Common ThreadLocal JAR</description>
+    <artifactId>polaris-threadlocal</artifactId>
+    <name>Polaris Common ThreadLocal</name>
+    <description>Polaris Common ThreadLocal JAR</description>
 
-	<dependencies>
-		<dependency>
-			<groupId>com.tencent.polaris</groupId>
-			<artifactId>polaris-logging</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>com.tencent.polaris</groupId>
+            <artifactId>polaris-logging</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

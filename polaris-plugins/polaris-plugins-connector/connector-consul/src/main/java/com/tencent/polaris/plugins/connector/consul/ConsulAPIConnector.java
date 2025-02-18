@@ -51,8 +51,8 @@ import com.tencent.polaris.plugins.connector.consul.service.InstanceService;
 import com.tencent.polaris.plugins.connector.consul.service.ServiceService;
 import com.tencent.polaris.plugins.connector.consul.service.authority.AuthorityService;
 import com.tencent.polaris.plugins.connector.consul.service.circuitbreaker.CircuitBreakingService;
-import com.tencent.polaris.plugins.connector.consul.service.lossless.LosslessService;
 import com.tencent.polaris.plugins.connector.consul.service.lane.LaneService;
+import com.tencent.polaris.plugins.connector.consul.service.lossless.LosslessService;
 import com.tencent.polaris.plugins.connector.consul.service.ratelimiting.RateLimitingService;
 import com.tencent.polaris.plugins.connector.consul.service.router.NearByRouteRuleService;
 import com.tencent.polaris.plugins.connector.consul.service.router.RoutingService;
@@ -342,7 +342,13 @@ public class ConsulAPIConnector extends DestroyableServerConnector {
             meta.putAll(req.getExtendedMetadata().get(SERVER_CONNECTOR_CONSUL));
         }
         service.setMeta(meta);
-        service.setTags(consulContext.getTags());
+
+        List<String> tags = new ArrayList<>(consulContext.getTags());
+        if (req.getExtendedMetadata().containsKey(TAGS_KEY)) {
+            tags.addAll(req.getExtendedMetadata().get(TAGS_KEY).values());
+        }
+        service.setTags(tags);
+
         if (null != req.getTtl()) {
             Check check = new Check();
             check.setTtl(req.getTtl() * 1.5 + "s");

@@ -120,7 +120,7 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
@@ -253,17 +253,17 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>flatten</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
-                    </execution>
-                    <execution>
                         <id>flatten.clean</id>
                         <phase>clean</phase>
                         <goals>
                             <goal>clean</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
                         </goals>
                     </execution>
                 </executions>

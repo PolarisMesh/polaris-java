@@ -20,13 +20,9 @@ package com.tencent.polaris.plugins.connector.grpc;
 import com.tencent.polaris.api.exception.ErrorCode;
 import com.tencent.polaris.api.exception.PolarisException;
 import com.tencent.polaris.api.exception.ServerCodes;
-import com.tencent.polaris.api.pojo.ServiceEventKey;
-import com.tencent.polaris.api.pojo.ServiceEventKey.EventType;
 import com.tencent.polaris.api.utils.MapUtils;
 import com.tencent.polaris.api.utils.StringUtils;
-import com.tencent.polaris.specification.api.v1.service.manage.RequestProto.DiscoverRequest.DiscoverRequestType;
 import com.tencent.polaris.specification.api.v1.service.manage.ResponseProto;
-import com.tencent.polaris.specification.api.v1.service.manage.ResponseProto.DiscoverResponse.DiscoverResponseType;
 import io.grpc.Metadata;
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
@@ -234,88 +230,4 @@ public class GrpcUtil {
             throw new PolarisException(ErrorCode.SERVER_ERROR, grpcEx.getMessage());
         }
     }
-
-    public static DiscoverRequestType buildDiscoverRequestType(
-            ServiceEventKey.EventType type) {
-        switch (type) {
-            case INSTANCE:
-                return DiscoverRequestType.INSTANCE;
-            case ROUTING:
-                return DiscoverRequestType.ROUTING;
-            case RATE_LIMITING:
-                return DiscoverRequestType.RATE_LIMIT;
-            case CIRCUIT_BREAKING:
-                return DiscoverRequestType.CIRCUIT_BREAKER;
-            case SERVICE:
-                return DiscoverRequestType.SERVICES;
-            case FAULT_DETECTING:
-                return DiscoverRequestType.FAULT_DETECTOR;
-            case LANE_RULE:
-                return DiscoverRequestType.LANE;
-            case NEARBY_ROUTE_RULE:
-                return DiscoverRequestType.NEARBY_ROUTE_RULE;
-            case LOSSLESS:
-                return DiscoverRequestType.LOSSLESS;
-            case BLOCK_ALLOW_RULE:
-                return DiscoverRequestType.BLOCK_ALLOW_RULE;
-            default:
-                return DiscoverRequestType.UNKNOWN;
-        }
-    }
-
-    public static DiscoverResponseType buildDiscoverResponseType(
-            ServiceEventKey.EventType type) {
-        switch (type) {
-            case INSTANCE:
-                return DiscoverResponseType.INSTANCE;
-            case ROUTING:
-                return DiscoverResponseType.ROUTING;
-            case RATE_LIMITING:
-                return DiscoverResponseType.RATE_LIMIT;
-            case CIRCUIT_BREAKING:
-                return DiscoverResponseType.CIRCUIT_BREAKER;
-            case SERVICE:
-                return DiscoverResponseType.SERVICES;
-            case FAULT_DETECTING:
-                return DiscoverResponseType.FAULT_DETECTOR;
-            case LANE_RULE:
-                return DiscoverResponseType.LANE;
-            case NEARBY_ROUTE_RULE:
-                return DiscoverResponseType.NEARBY_ROUTE_RULE;
-            case LOSSLESS:
-                return DiscoverResponseType.LOSSLESS;
-            case BLOCK_ALLOW_RULE:
-                return DiscoverResponseType.BLOCK_ALLOW_RULE;
-            default:
-                return DiscoverResponseType.UNKNOWN;
-        }
-    }
-
-    public static EventType buildEventType(DiscoverResponseType responseType) {
-        switch (responseType) {
-            case INSTANCE:
-                return EventType.INSTANCE;
-            case ROUTING:
-                return EventType.ROUTING;
-            case RATE_LIMIT:
-                return EventType.RATE_LIMITING;
-            case CIRCUIT_BREAKER:
-                return EventType.CIRCUIT_BREAKING;
-            case SERVICES:
-                return EventType.SERVICE;
-            case FAULT_DETECTOR:
-                return EventType.FAULT_DETECTING;
-            case LANE:
-                return EventType.LANE_RULE;
-            case NEARBY_ROUTE_RULE:
-                return EventType.NEARBY_ROUTE_RULE;
-            case LOSSLESS:
-                return EventType.LOSSLESS;
-            case BLOCK_ALLOW_RULE:
-                return EventType.BLOCK_ALLOW_RULE;
-            default:
-                return EventType.UNKNOWN;
-        }
-    }
-
 }

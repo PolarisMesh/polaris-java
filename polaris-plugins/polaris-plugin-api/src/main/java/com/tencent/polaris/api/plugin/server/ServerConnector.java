@@ -41,6 +41,17 @@ public interface ServerConnector extends Plugin {
     void registerServiceHandler(ServiceEventHandler handler) throws PolarisException;
 
     /**
+     * 检查服务事件是否支持
+     *
+     * @param eventType 服务事件类型
+     * @return
+     * @throws PolarisException
+     */
+    default boolean checkEventSupported(ServiceEventKey.EventType eventType) throws PolarisException {
+        return true;
+    }
+
+    /**
      * 反注册服务监听器
      *
      * @param eventKey 服务标识

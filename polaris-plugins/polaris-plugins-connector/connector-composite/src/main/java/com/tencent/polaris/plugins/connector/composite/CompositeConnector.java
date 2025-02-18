@@ -36,6 +36,7 @@ import com.tencent.polaris.plugins.connector.common.DestroyableServerConnector;
 import com.tencent.polaris.plugins.connector.common.ServiceUpdateTask;
 import com.tencent.polaris.plugins.connector.common.constant.ServiceUpdateTaskConstant;
 import com.tencent.polaris.plugins.connector.common.constant.ServiceUpdateTaskConstant.Type;
+import com.tencent.polaris.plugins.connector.common.utils.DiscoverUtils;
 import com.tencent.polaris.plugins.connector.composite.zero.TestConnectivityTask;
 import com.tencent.polaris.plugins.connector.composite.zero.TestConnectivityTaskManager;
 import com.tencent.polaris.specification.api.v1.service.manage.ResponseProto;
@@ -154,8 +155,27 @@ public class CompositeConnector extends DestroyableServerConnector {
     @Override
     public void registerServiceHandler(ServiceEventHandler handler) throws PolarisException {
         checkDestroyed();
+        ServiceEventKey serviceEventKey = handler.getServiceEventKey();
+        if (!checkEventSupported(serviceEventKey.getEventType())) {
+            LOG.info("[CompositeConnector] not supported event type for {}", serviceEventKey);
+            handler.getEventHandler()
+                    .onEventUpdate(new ServerEvent(serviceEventKey, DiscoverUtils.buildEmptyResponse(serviceEventKey), null));
+            return;
+        }
         ServiceUpdateTask serviceUpdateTask = new CompositeServiceUpdateTask(handler, this);
         submitServiceHandler(serviceUpdateTask, 0);
+    }
+
+    @Override
+    public boolean checkEventSupported(ServiceEventKey.EventType eventType) throws PolarisException {
+        checkDestroyed();
+        boolean supported = true;
+        for (DestroyableServerConnector sc : serverConnectors) {
+            if (!sc.checkEventSupported(eventType)) {
+                supported = false;
+            }
+        }
+        return supported;
     }
 
     @Override

@@ -35,6 +35,7 @@ import com.tencent.polaris.factory.config.global.ServerConnectorConfigImpl;
 import com.tencent.polaris.logging.LoggerFactory;
 import com.tencent.polaris.plugins.connector.common.ServiceUpdateTask;
 import com.tencent.polaris.plugins.connector.common.constant.ServiceUpdateTaskConstant.Type;
+import com.tencent.polaris.plugins.connector.common.utils.DiscoverUtils;
 import com.tencent.polaris.specification.api.v1.service.manage.PolarisGRPCGrpc;
 import com.tencent.polaris.specification.api.v1.service.manage.RequestProto;
 import com.tencent.polaris.specification.api.v1.service.manage.ResponseProto;
@@ -42,22 +43,12 @@ import com.tencent.polaris.specification.api.v1.service.manage.ServiceProto;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -197,7 +188,7 @@ public class SpecStreamClient implements StreamObserver<ResponseProto.DiscoverRe
                 StringValue.newBuilder().setValue(serviceUpdateTask.getEventHandler().getRevision()).build());
 
         RequestProto.DiscoverRequest.Builder req = RequestProto.DiscoverRequest.newBuilder();
-        req.setType(GrpcUtil.buildDiscoverRequestType(serviceEventKey.getEventType())); // switch
+        req.setType(DiscoverUtils.buildDiscoverRequestType(serviceEventKey.getEventType())); // switch
         req.setService(builder);
         if (serviceUpdateTask.getTaskType() == Type.FIRST) {
             LOG.info("[ServerConnector]send request(id={}) to {} for service {}", reqId, connection.getConnID(),
@@ -221,7 +212,7 @@ public class SpecStreamClient implements StreamObserver<ResponseProto.DiscoverRe
             errorCode = ServerCodes.convertServerErrorToRpcError(response.getCode().getValue());
         }
         ServiceProto.Service service = response.getService();
-        EventType eventType = GrpcUtil.buildEventType(response.getType());
+        EventType eventType = DiscoverUtils.buildEventType(response.getType());
         if (!eventType.equals(EventType.SERVICE) && (StringUtils.isEmpty(service.getNamespace().getValue())
                 || StringUtils.isEmpty(service.getName().getValue()))) {
             return new ValidResult(null, ErrorCode.INVALID_SERVER_RESPONSE,
@@ -309,7 +300,7 @@ public class SpecStreamClient implements StreamObserver<ResponseProto.DiscoverRe
         }
         ServiceProto.Service service = response.getService();
         ServiceKey serviceKey = new ServiceKey(service.getNamespace().getValue(), service.getName().getValue());
-        EventType eventType = GrpcUtil.buildEventType(response.getType());
+        EventType eventType = DiscoverUtils.buildEventType(response.getType());
         ServiceEventKey serviceEventKey = new ServiceEventKey(serviceKey, eventType);
         ServiceUpdateTask updateTask;
         synchronized (clientLock) {

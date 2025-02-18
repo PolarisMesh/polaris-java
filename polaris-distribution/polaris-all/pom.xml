@@ -37,12 +37,6 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
             <version>${javax.annotation.version}</version>
@@ -72,6 +66,13 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <id>flatten</id>
                         <phase>process-resources</phase>
                         <goals>
@@ -79,10 +80,10 @@
                         </goals>
                     </execution>
                     <execution>
-                        <id>flatten.clean</id>
-                        <phase>clean</phase>
+                        <id>flatten-again</id>
+                        <phase>package</phase>
                         <goals>
-                            <goal>clean</goal>
+                            <goal>flatten</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -142,6 +143,16 @@
                                     </shadedPattern>
                                 </relocation>
                                 <relocation>
+                                    <pattern>org.apache.commons.logging</pattern>
+                                    <shadedPattern>shade.polaris.org.apache.commons.logging
+                                    </shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache.http</pattern>
+                                    <shadedPattern>shade.polaris.org.apache.org.apache.http
+                                    </shadedPattern>
+                                </relocation>
+                                <relocation>
                                     <pattern>io.perfmark</pattern>
                                     <shadedPattern>shade.polaris.io.perfmark</shadedPattern>
                                 </relocation>
@@ -189,19 +200,6 @@
                                 </excludes>
                             </artifactSet>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>flatten-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>flatten</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>flatten</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>

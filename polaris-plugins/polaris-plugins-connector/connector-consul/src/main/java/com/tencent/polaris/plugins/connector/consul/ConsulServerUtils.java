@@ -19,8 +19,8 @@ package com.tencent.polaris.plugins.connector.consul;
 
 import com.ecwid.consul.v1.health.model.HealthService;
 import com.tencent.polaris.api.utils.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.tencent.polaris.logging.LoggerFactory;
+import org.slf4j.Logger;
 
 import java.net.Inet6Address;
 import java.net.InetAddress;
@@ -42,7 +42,7 @@ import static com.tencent.polaris.plugins.connector.common.constant.ConnectorCon
  */
 public class ConsulServerUtils {
 
-    private static final Log log = LogFactory.getLog(ConsulServerUtils.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ConsulServerUtils.class);
 
     public static String findHost(HealthService healthService) {
         HealthService.Service service = healthService.getService();
@@ -64,7 +64,7 @@ public class ConsulServerUtils {
             }
             return address;
         } catch (UnknownHostException e) {
-            log.debug("Not InetAddress: " + address + " , resolved as is.");
+            LOG.debug("Not InetAddress: " + address + " , resolved as is.");
             return address;
         }
     }

@@ -45,6 +45,7 @@ import com.tencent.polaris.plugins.connector.common.DestroyableServerConnector;
 import com.tencent.polaris.plugins.connector.common.ServiceUpdateTask;
 import com.tencent.polaris.plugins.connector.common.constant.ServiceUpdateTaskConstant.Status;
 import com.tencent.polaris.plugins.connector.common.constant.ServiceUpdateTaskConstant.Type;
+import com.tencent.polaris.plugins.connector.common.utils.DiscoverUtils;
 import com.tencent.polaris.plugins.connector.grpc.Connection.ConnID;
 import com.tencent.polaris.specification.api.v1.model.ModelProto;
 import com.tencent.polaris.specification.api.v1.service.manage.*;
@@ -52,7 +53,6 @@ import com.tencent.polaris.specification.api.v1.service.manage.ClientProto.Clien
 import com.tencent.polaris.specification.api.v1.service.manage.ClientProto.StatInfo;
 import com.tencent.polaris.specification.api.v1.service.manage.RequestProto.DiscoverRequest;
 import com.tencent.polaris.specification.api.v1.service.manage.ResponseProto.DiscoverResponse;
-import com.tencent.polaris.specification.api.v1.service.manage.ServiceProto.Service;
 import io.grpc.stub.StreamObserver;
 import org.slf4j.Logger;
 
@@ -61,7 +61,6 @@ import java.util.concurrent.*;
 import java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.tencent.polaris.specification.api.v1.model.CodeProto.Code.ExecuteSuccess;
 import static com.tencent.polaris.specification.api.v1.model.CodeProto.Code.InvalidDiscoverResource;
 
 /**
@@ -191,25 +190,14 @@ public class GrpcConnector extends DestroyableServerConnector {
         if (!checkEventSupported(serviceEventKey.getEventType())) {
             LOG.info("[ServerConnector] not supported event type for {}", serviceEventKey);
             handler.getEventHandler()
-                    .onEventUpdate(new ServerEvent(serviceEventKey, buildEmptyResponse(serviceEventKey), null));
+                    .onEventUpdate(new ServerEvent(serviceEventKey, DiscoverUtils.buildEmptyResponse(serviceEventKey), null));
             return;
         }
         ServiceUpdateTask serviceUpdateTask = new GrpcServiceUpdateTask(handler, this);
         submitServiceHandler(serviceUpdateTask, 0);
     }
 
-    private DiscoverResponse buildEmptyResponse(ServiceEventKey serviceEventKey) {
-        DiscoverResponse.Builder builder = DiscoverResponse.newBuilder();
-        builder.setService(
-                Service.newBuilder().setName(StringValue.newBuilder().setValue(serviceEventKey.getService()).build())
-                        .setNamespace(
-                                StringValue.newBuilder().setValue(serviceEventKey.getNamespace()).build()));
-        builder.setCode(UInt32Value.newBuilder().setValue(ExecuteSuccess.getNumber()).build());
-        builder.setType(GrpcUtil.buildDiscoverResponseType(serviceEventKey.getEventType()));
-        return builder.build();
-    }
-
-    private boolean checkEventSupported(EventType eventType) {
+    public boolean checkEventSupported(EventType eventType) {
         Boolean aBoolean = supportedResourcesType.get(eventType);
         if (null != aBoolean) {
             return aBoolean;
@@ -257,7 +245,7 @@ public class GrpcConnector extends DestroyableServerConnector {
                             }
                         });
                 RequestProto.DiscoverRequest.Builder req = RequestProto.DiscoverRequest.newBuilder();
-                req.setType(GrpcUtil.buildDiscoverRequestType(eventType));
+                req.setType(DiscoverUtils.buildDiscoverRequestType(eventType));
                 discoverClient.onNext(req.build());
                 try {
                     countDownLatch.await();

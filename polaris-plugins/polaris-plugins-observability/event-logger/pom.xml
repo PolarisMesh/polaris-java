@@ -15,12 +15,4 @@
     <name>Polaris Plugins Observability Logger Event Reporter</name>
     <description>Polaris Plugins Observability Logger Event Reporter JAR</description>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 </project>
